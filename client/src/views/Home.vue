@@ -38,13 +38,15 @@
         <img v-if="message.value.imageURL" :src="message.value.imageURL"
         class="align-self-start mr-4" :alt="message.value.subject">
         <div class="media-body">
-          <h4 class="mt-0 mb-1">{{ message.value.username }}</h4>
+          <a :href="'http://localhost:9090/' + message._id">
+            <h4 class="mt-0 mb-1">{{ message.value.username }}</h4>
+          </a>
           <h5 class="mt-0 mb-1">{{ message.value.subject }}</h5>
             <p>{{ message.value.message }}</p>
             <br class="solid">
             <small>{{message.value.create}}</small>
         </div>
-        </li>
+      </li>
     </ul>
   </div>
 </template>
