@@ -32,7 +32,12 @@ function create(message) {
   }
 }
 
+function getOne(messageId) {
+  return messages.findOne({_id: messageId})
+}
+
 module.exports = {
   create,
-  getAll
+  getAll,
+  getOne,
 }

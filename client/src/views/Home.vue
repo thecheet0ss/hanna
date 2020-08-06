@@ -34,7 +34,7 @@
       </form>
     </div>
     <ul class="list-unstyled">
-      <li class="media my-4 mr-3" v-for="message in messages" :key="message._id" >
+      <li class="media my-4 mr-3" v-for="message in messages" :key="message._id">
         <img v-if="message.value.imageURL" :src="message.value.imageURL"
         class="align-self-start mr-4" :alt="message.value.subject">
         <div class="media-body">
@@ -52,7 +52,7 @@
 <script>
 
 // @ is an alias to /src
-const API_URL = 'http://192.168.0.3:9000/messages';
+const API_URL = 'http://localhost:9000/messages';
 
 export default {
   name: 'Home',

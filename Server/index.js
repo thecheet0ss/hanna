@@ -39,6 +39,18 @@ app.post('/messages', (req, res) => {
   })
 })
 
+app.get('/messages/:id', (req, res) => {
+  // res.send(req.params.id)
+  messages.getOne(req.params.id).then((docs) => {
+    console.log(docs)
+    res.json(docs)
+  }).catch((error) => {
+    console.log('error catched in a post function: ')
+    res.status(500)
+    res.json(error)
+  })
+})
+
 app.listen(port, () => {
   console.log(`Server is running on ${port}`)
 })
