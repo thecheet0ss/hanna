@@ -1,50 +1,28 @@
 <template>
   <div class="home">
-    <button @click="showMessageForm = !showMessageForm" class="btn btn-info my-3" type="button">
-      Toggle Message Form
+    <button @click="showTaskForm = !showTaskForm" class="btn btn-info my-3" type="button">
+      Add Task
     </button>
-    <div v-if="showMessageForm" class="jumbotron my-4">
-      <form @submit="addMessage">
+    <div v-if="showTaskForm" class="jumbotron my-4">
+      <form @submit.prevent="enrollTask">
         <div class="form-group">
-          <label class="text-uppercase" for="InputUsername">username</label>
-          <input v-model="message.username" type="text" class="form-control"
-          id="username" aria-describedby="usernameHelp" required>
-          <small id="usernameHelp" class="form-text text-muted">
-            You have to fill this field!
+          <label for="InputUsername">고객사 명</label>
+          <input v-model="task.clientName" type="text" class="form-control"
+          id="clientname" aria-describedby="clientNameHelp" required>
+          <small id="clientNameHelp" class="form-text text-muted">
+            고객사 선택
           </small>
         </div>
-        <div class="form-group">
-          <label class="text-uppercase" for="InputSubject">subject</label>
-          <input v-model="message.subject" type="text" class="form-control" id="subject"
-          aria-describedby="subjectHelp" required>
-          <small id="subjectHelp" class="form-text text-muted">
-            Choose a subject you want to write about!
-          </small>
-        </div>
-        <div class="form-group">
-          <label class="text-uppercase" for="InputMessage">message</label>
-          <textarea v-model="message.message" class="form-control" id="message" rows="5" required>
-          </textarea>
-        </div>
-        <div class="form-group">
-          <label class="text-uppercase" for="InputSubject">image url</label>
-          <input v-model="message.imageURL" type="text" class="form-control" id="subject">
-        </div>
-        <button type="submit" class="btn btn-primary">Add Message</button>
+        <button type="submit" class="btn btn-primary">Add Task</button>
       </form>
     </div>
     <ul class="list-unstyled">
-      <li class="media my-4 mr-3" v-for="message in messages" :key="message._id">
-        <img v-if="message.value.imageURL" :src="message.value.imageURL"
-        class="align-self-start mr-4" :alt="message.value.subject">
+      <li class="media my-4 mr-3" v-for="task in reversedTasks" :key="task._id">
         <div class="media-body">
-          <a :href="'http://localhost:9090/' + message._id">
-            <h4 class="mt-0 mb-1">{{ message.value.username }}</h4>
+          <a :href="'http://192.168.0.3:9090/' + task._id">
+            <h4 class="mt-0 mb-1">{{ task.clientName }}</h4>
           </a>
-          <h5 class="mt-0 mb-1">{{ message.value.subject }}</h5>
-            <p>{{ message.value.message }}</p>
-            <br class="solid">
-            <small>{{message.value.create}}</small>
+            <small>{{ task.createdAt }}</small>
         </div>
       </li>
     </ul>
@@ -52,45 +30,46 @@
 </template>
 
 <script>
-
+/* eslint no-underscore-dangle: 0 */
 // @ is an alias to /src
-const API_URL = 'http://localhost:9000/messages';
+const API_URL = 'http://192.168.0.3:9000/tasks/';
 
 export default {
   name: 'Home',
   data: () => ({
-    showMessageForm: false,
-    messages: [],
-    message: {
-      username: '',
-      subject: '',
-      message: '',
-      imageURL: '',
+    showTaskForm: false,
+    tasks: [],
+    task: {
+      clientName: '',
     },
   }),
   computed: {
-    reversedMessages() {
-      console.log('reversed');
-      return 0;
+    reversedTasks() {
+      // console.log('reversed');
+      return this.tasks.slice().reverse();
     },
   },
   mounted() {
     fetch(API_URL).then((response) => response.json()).then((result) => {
-      this.messages = result;
+      this.tasks = result;
     });
   },
   methods: {
-    addMessage() {
+    enrollTask() {
+      // console.log(this.task);
       // console.log(this.message);
-      console.log(JSON.stringify(this.message.imageURL));
       fetch(API_URL, {
         method: 'POST',
-        body: JSON.stringify(this.message),
+        body: JSON.stringify(this.task),
         headers: {
           'Content-Type': 'application/json',
         },
+        redirect: 'follow',
       }).then((response) => response.json()).then((result) => {
-        console.log(result);
+        console.log('creat eone result', result._id);
+        window.location.href = `http://192.168.0.3:9090/${result._id}`;
+      }).catch((error) => {
+        console.log(error);
       });
     },
   },

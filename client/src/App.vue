@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <a class="navbar-brand" href="#">Okta</a>
+      <a class="navbar-brand" href="/">Hanna</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse"
       data-target="#navbarColor01" aria-controls="navbarColor01"
       aria-expanded="true" aria-label="Toggle navigation">
